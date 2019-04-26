@@ -11,11 +11,11 @@ public class Movie {
     public static final int NEW_RELEASE = 1;
 
     private String title;
-    private int priceCode;
+    Price price;
 
     public Movie(String title, int priceCode) {
         this.title = title;
-        this.priceCode = priceCode;
+        setPriceCode(priceCode);
     }
 
     public String getTitle() {
@@ -27,48 +27,33 @@ public class Movie {
     }
 
     public int getPriceCode() {
-        return priceCode;
+        return price.getPriceCode();
     }
 
     public void setPriceCode(int priceCode) {
-        this.priceCode = priceCode;
-    }
-
-    public double getThisAmount(int daysRented) {
-        double result = 0;
-        switch (getPriceCode()) {
-            // 取得影片出租价格
+        switch (priceCode){
             case REGULAR:
                 // 普通片
-                result += 2;
-                if (daysRented > 2) {
-                    result += (daysRented - 2) * 1.5;
-                }
+                price = new RegularPrice();
                 break;
             case NEW_RELEASE:
                 // 新片
-                result += daysRented * 3;
+                price = new NewReleasePrice();
                 break;
             case CHILDREN:
                 // 儿童。
-                result += 1.5;
-                if (daysRented > 3) {
-                    result += (daysRented - 3) * 1.5;
-                }
+                price = new ChildrenPrice();
                 break;
             default:
                 break;
         }
-        return result;
+    }
+
+    public double getCharge(int daysRented){
+        return price.getCharge(daysRented);
     }
 
     public int getFrequentRenterPoints(int daysRented) {
-        // add frequent renter points （累计常客积点。
-        // add bonus for a two day new release rental
-        if ((getPriceCode() == NEW_RELEASE)
-                && daysRented > 1) {
-            return 2;
-        }
-        return 1;
+        return price.getFrequentRenterPoints(daysRented);
     }
 }

@@ -6,7 +6,7 @@ package com.example.movie;
  * @description: 租赁
  */
 public class Rental {
-    Movie movie;
+    private Movie movie;
     private int daysRented;
 
     public Rental(Movie movie, int daysRented) {
@@ -23,7 +23,7 @@ public class Rental {
     }
 
     public double getThisAmount(){
-        return movie.getThisAmount(daysRented);
+        return movie.getCharge(daysRented);
     }
 
     public int getTotalRenterPoints(){
